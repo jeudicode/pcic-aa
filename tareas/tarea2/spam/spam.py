@@ -40,6 +40,8 @@ y = data_train[[2000]]
 X_test = data_test.iloc[:,:2000]
 y_test = data_test[[2000]]
 
-pred_mul = mul.fit(X, np.ravel(y)).predict(X_test) #mul.fit(data_train).predict(data_test)
+pred_train = mul.fit(X, np.ravel(y)).predict(X) #mul.fit(data_train).predict(data_test)
+pred_test = mul.fit(X, np.ravel(y)).predict(X_test) #mul.fit(data_train).predict(data_test)
 
-print("\nErrores de entre %d valores: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_mul).sum()))
+print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], (np.ravel(y) != pred_train).sum()))
+print("\nErrores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test).sum()))
