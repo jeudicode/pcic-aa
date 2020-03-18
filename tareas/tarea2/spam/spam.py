@@ -24,24 +24,38 @@ print("Pct no spam: ", round(pct_no_spam))
 # selección de registros para entrenamiento y pruebas
 data_train, data_test = train_test_split(data, train_size=0.7, test_size=0.3, random_state=0)
 
-print("shape: ", data_train.shape)
+mul = nb.MultinomialNB() # clasificador multinomial
+ber = nb.BernoulliNB(binarize=1) # clasificador Bernoulli
 
-index = data_train.index
-cols = data_train.columns
-values = data_train.values
-
-print(index)
-print(cols)
-print(values)
-mul = nb.MultinomialNB()
-
+# se configuran los datos
 X = data_train.iloc[:,:2000]
 y = data_train[[2000]]
 X_test = data_test.iloc[:,:2000]
 y_test = data_test[[2000]]
 
-pred_train = mul.fit(X, np.ravel(y)).predict(X) #mul.fit(data_train).predict(data_test)
-pred_test = mul.fit(X, np.ravel(y)).predict(X_test) #mul.fit(data_train).predict(data_test)
+# aplicando el clasificador multinomial
+pred_train = mul.fit(X, np.ravel(y)).predict(X)
+pred_test = mul.fit(X, np.ravel(y)).predict(X_test)
 
+# aplicando el clasificador Bernoulli
+pred_train_ber = ber.fit(X, np.ravel(y)).predict(X)
+pred_test_ber = ber.fit(X, np.ravel(y)).predict(X_test)
+
+print("\n******* Resultados para el clasificador multinomial *******")
+suma = (np.ravel(y) != pred_train).sum()
+suma2 = (np.ravel(y_test) != pred_test).sum()
 print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], (np.ravel(y) != pred_train).sum()))
-print("\nErrores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test).sum()))
+print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test).sum()))
+print("Precisión en el conjunto de entrenamiento: %d%%" % (100 - (suma / X.shape[0] * 100)))
+print("Precisión en el conjunto de prueba: %d%%" % (100 - (suma2 / X_test.shape[0] * 100)))
+
+
+
+
+print("\n******* Resultados para el clasificador Bernoulli *******")
+suma = (np.ravel(y) != pred_train_ber).sum()
+suma2 = (np.ravel(y_test) != pred_test_ber).sum()
+print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], (np.ravel(y) != pred_train_ber).sum()))
+print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test_ber).sum()))
+print("Precisión en el conjunto de entrenamiento: %d%%" % (100 - (suma / X.shape[0] * 100)))
+print("Precisión en el conjunto de prueba: %d%%" % (100 - (suma2 / X_test.shape[0] * 100)))
