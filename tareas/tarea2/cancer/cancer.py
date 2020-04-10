@@ -42,6 +42,9 @@ mean_set = mean_set.drop(columns=0)
 median_set = median_set.drop(columns=0)
 mode_set = mode_set.drop(columns=0)
 
+print(mean_set.iloc[23])
+print(median_set.iloc[23])
+print(mode_set.iloc[23])
 # selección de registros para entrenamiento y pruebas
 mean_train, mean_test = train_test_split(mean_set, train_size=0.7, test_size=0.3, random_state=0)
 median_train, median_test = train_test_split(median_set, train_size=0.7, test_size=0.3, random_state=0)

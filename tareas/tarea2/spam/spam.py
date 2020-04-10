@@ -21,7 +21,7 @@ print("Total no spam: ", total_no_spam)
 print("Pct spam: ", round(pct_spam))
 print("Pct no spam: ", round(pct_no_spam))
 
-# selección de registros para entrenamiento y pruebas
+# seleccion de registros para entrenamiento y pruebas
 data_train, data_test = train_test_split(data, train_size=0.7, test_size=0.3, random_state=0)
 
 mul = nb.MultinomialNB() # clasificador multinomial
@@ -44,8 +44,8 @@ pred_test_ber = ber.fit(X, np.ravel(y)).predict(X_test)
 print("\n******* Resultados para el clasificador multinomial *******")
 suma = (np.ravel(y) != pred_train).sum()
 suma2 = (np.ravel(y_test) != pred_test).sum()
-print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], (np.ravel(y) != pred_train).sum()))
-print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test).sum()))
+print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], suma))
+print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], suma2))
 print("Precisión en el conjunto de entrenamiento: %d%%" % (100 - (suma / X.shape[0] * 100)))
 print("Precisión en el conjunto de prueba: %d%%" % (100 - (suma2 / X_test.shape[0] * 100)))
 
@@ -55,7 +55,7 @@ print("Precisión en el conjunto de prueba: %d%%" % (100 - (suma2 / X_test.shape
 print("\n******* Resultados para el clasificador Bernoulli *******")
 suma = (np.ravel(y) != pred_train_ber).sum()
 suma2 = (np.ravel(y_test) != pred_test_ber).sum()
-print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], (np.ravel(y) != pred_train_ber).sum()))
-print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], (np.ravel(y_test) != pred_test_ber).sum()))
+print("\nErrores de entre %d valores en el set de entrenamiento: %d" % (X.shape[0], suma))
+print("Errores de entre %d valores en el set de prueba: %d" % (X_test.shape[0], suma2))
 print("Precisión en el conjunto de entrenamiento: %d%%" % (100 - (suma / X.shape[0] * 100)))
 print("Precisión en el conjunto de prueba: %d%%" % (100 - (suma2 / X_test.shape[0] * 100)))

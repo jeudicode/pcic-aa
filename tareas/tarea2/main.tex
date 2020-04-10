@@ -1,11 +1,15 @@
-\documentclass[letterpaper,12pt]{memoir}
+\documentclass[letterpaper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,es-tabla]{babel}
 \decimalpoint
 \usepackage{amsfonts}
 
 \usepackage{mathptmx}
+%\usepackage{heuristica}
+%\usepackage[heuristica,vvarbb,bigdelims]{newtxmath}
+
 \usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{\textosf{#1}}
 \usepackage[margin=1.3in]{geometry}
 \usepackage{amsthm}
 \usepackage{marvosym}
@@ -25,14 +29,13 @@
   \vspace{10pt}\noindent{\bfseries\refstepcounter{paragraphnumber}\theparagraphnumber.\quad}%
 }
 
-\setsecheadstyle{\large\bfseries}
-\setsubsecheadstyle{\bfseries}
+%\setsecheadstyle{\large\bfseries}
+%\setsubsecheadstyle{\bfseries}
 
 \setlength\parindent{0pt}
 
 \pagenumbering{gobble}
 
-\usepackage[margin=1in]{geometry}
 
 \usepackage{enumitem}
 \setlist{nosep}
@@ -52,14 +55,16 @@
 
 \begin{document}
 
+
+
 \begin{center}
   {\large Aprendizaje Automatizado}\\
   \vspace{0.2cm}
-  {\large\bfseries Tarea 1}\\
+  {\large\bfseries Tarea 2}\\
   \vspace{0.2cm}
   {\large PCIC - UNAM}\\
   \vspace{0.5cm}
-  {\itshape 20 de febrero de 2020}\\
+  {\itshape 18 de marzo de 2020}\\
   \vspace{0.5cm}
   Diego de Jesús Isla López\\
   (\href{mailto:dislalopez@gmail.com}{\itshape dislalopez@gmail.com})\\
@@ -69,704 +74,437 @@
 
 \section*{Ejercicio 1}
 
-Sabemos que de haber dos pelotas rojas, la probabilidad de sacar 3 veces una roja con reemplazo es 1. De igual forma, la probabilidad de que haya dos pelotas rojas es de 0.25; la probabilidad de que haya una de cada color es 0.5 y de que haya dos azules es 0.25.
+Para ambos estimadores se tomarán distribuciones normales para los atributos \textbf{estatura} y \textbf{peso}, así como una distribución categórica para el atributo \textbf{nombre}. Para las clase \textbf{género} (M, F), se toma una distribución Bernoulli.\\
 
-Entonces:
 
-\(A\) = Sacar tres rojas si todas son rojas\\
-\(B_1\) = que ambas sean rojas\\
-\(B_2\) = que haya una de cada color\\
-\(B_3\) = que ambas sean azules\\
+\subsection*{Estimador de máxima verosimilitud (EMV)}
 
-\begin{align*}
-  P(B_1|A) &= \frac{P(A|B_1)P(B_1)}{P(A|B_1)P(B_1)+P(A|B_2)P(B_2)+
-  P(A|B_3)P(B_3)}\\
-  \\
-         &= \frac{\frac{1}{4}}{ \frac{1}{4} + \frac{1}{16}}\\
-         \\
-         &= \frac{\frac{1}{4}}{ \frac{5}{16}}\\
-         \\
-         &= \frac{4}{5}\\
-         \\
-\end{align*}
+Dado que para los atributos \textbf{estatura} y \textbf{peso} se toma una distribución normal, tenemos:
+
+\begin{equation}
+  \hat{\mu}_{EMV} = \frac{1}{n} \cdot \sum_{i=1}^n x^{(i)}
+\end{equation}
+
+\begin{equation}
+  \sigma^2_{EMV} = \frac{1}{n} \cdot \sum_{i=1}^n (x^{(i)} - \hat{\mu}_{EMV})^2
+\end{equation}
+
+Para el atributo \textbf{nombre} se calcula 
+
+\begin{equation}
+  \hat{q}_k = \frac{1}{n} \cdot c_k
+\end{equation}
+
+Para la clase \textbf{M} tenemos:\\
+\begin{itemize}
+  \item Estatura:
+  \begin{equation}
+    \hat{\mu}_{M_{estatura}} = \frac{1}{7} \cdot \sum_{i=1}^7 x^{(i)} = \frac{1}{7} \cdot (12.37) = 1.7671
+  \end{equation}
+  \begin{equation}
+    \sigma^2_{M_{estatura}} = \frac{1}{7} \cdot \sum_{i=1}^7 (x^{(i)} - \hat{\mu}_{M_{estatura}})^2 = \frac{1}{7} \cdot (0.0137) = 0.0019
+  \end{equation}
+  \item Peso:
+  \begin{equation}
+    \hat{\mu}_{M_{peso}} = \frac{1}{7} \cdot \sum_{i=1}^7 x^{(i)} = \frac{1}{7} \cdot (547.4) = 78.2
+  \end{equation}
+  \begin{equation}
+    \sigma^2_{M_{peso}} = \frac{1}{7} \cdot \sum_{i=1}^7 (x^{(i)} - \hat{\mu}_{M_{peso}})^2 = \frac{1}{7} \cdot (110.3599) = 15.7657
+  \end{equation}
+  \item Nombre:
+  \begin{equation}
+    \hat{q}_{Denis} = \frac{1}{7}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Alex} = \frac{2}{7}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Cris} = \frac{1}{7}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Juan} = \frac{2}{7}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Guadalupe} = \frac{1}{7}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Rene} = \frac{0}{7}
+  \end{equation}
+\end{itemize}
+
+Para la clase \textbf{F} tenemos:\\
+\begin{itemize}
+  \item Estatura:
+  \begin{equation}
+    \hat{\mu}_{F_{estatura}} = \frac{1}{6} \cdot \sum_{i=1}^6 x^{(i)} = \frac{1}{6} \cdot (9.7098) = 1.6183
+  \end{equation}
+  \begin{equation}
+    \sigma^2_{F_{estatura}} = \frac{1}{6} \cdot \sum_{i=1}^6 (x^{(i)} - \hat{\mu}_{F_{estatura}})^2 = \frac{1}{6} \cdot (0.1344) = 0.0224
+  \end{equation}
+  \item Peso:
+  \begin{equation}
+    \hat{\mu}_{F_{peso}} = \frac{1}{6} \cdot \sum_{i=1}^6 x^{(i)} = \frac{1}{6} \cdot (351.9) = 58.65
+  \end{equation}
+  \begin{equation}
+    \sigma^2_{F_{peso}} = \frac{1}{6} \cdot \sum_{i=1}^6 (x^{(i)} - \hat{\mu}_{F_{peso}})^2 = \frac{1}{6} \cdot (426.0546) = 71.0091
+  \end{equation}
+  \item Nombre:
+  \begin{equation}
+    \hat{q}_{Denis} = \frac{1}{6}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Alex} = \frac{1}{6}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Cris} = \frac{1}{6}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Juan} = \frac{0}{6}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Guadalupe} = \frac{2}{6}
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Rene} = \frac{1}{6}
+  \end{equation}
+\end{itemize}
+
+Los parámetros de la clase \textbf{género} los obtenemos mediante:
+
+\begin{equation}
+  \hat{q}_{k} = \frac{N_k}{N}
+\end{equation}
+
+Entonces, para \textbf{M} tenemos:\\
+\begin{equation}
+  \hat{q}_{M} = \frac{7}{13}
+\end{equation}
+
+Para \textbf{F} tenemos:
+\begin{equation}
+  \hat{q}_{F} = \frac{6}{13}
+\end{equation}
+
+Dado que los atributos son independientes, la probabilidad en cada clase se calculará como:
+
+\begin{equation}
+  P(F|x) = P(F) \cdot P(x_{nombre}|F) \cdot P(x_{estatura}|F) \cdot P(x_{peso}|F)
+\end{equation}
+\begin{equation}
+  P(M|x) = P(M) \cdot P(x_{nombre}|M) \cdot P(x_{estatura}|M) \cdot P(x_{peso}|M)
+\end{equation}
+
+La probabilidad de los atributos con distribución normal se calcula como:
+\begin{equation}
+  L(\mu,\sigma^2|x) = \frac{1}{\sqrt{2 \pi \sigma^2}} \cdot e^{\frac{-(x^{(i)}-\mu)^2}{2 \sigma^2}}
+\end{equation}
+
+Para los atributos con distribución categórica y Bernoulli, se utilizan sus respectivos valores de \(q_k\).\\
+
+Utilizado el estimador para el primer caso \(x_1 = \) (Rene, 1.68, 65), tenemos:
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_1) = \frac{6}{13}  \cdot \frac{1}{6} \cdot (3.4113) \cdot (0.0341) = 0.00894 = 0.89\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: Dado que la probabilidad para \(\hat{q}_{Rene} = 0\) para la clase \textbf{M}, la probabilidad es 0.
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_1\) es \textbf{F}.\\
+
+Para el caso \(x_2 = \) (Guadalupe, 1.75, 80), tenemos:
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_2) = \frac{6}{13}  \cdot \frac{1}{6} \cdot (1.5998) \cdot (0.0229) = 0.0007 = 0.07\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_2) = \frac{7}{13}  \cdot \frac{1}{7} \cdot (7.7204) \cdot (0.0851) = 0.0505 = 5.05\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_2\) es \textbf{M}.\\
+
+Para el caso \(x_3 = \) (Denis, 1.80, 79), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_3) = \frac{6}{13}  \cdot \frac{1}{6} \cdot (0.6658) \cdot (0.0038) = 0.0001 = 0.01\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_3) = \frac{7}{13}  \cdot \frac{1}{7} \cdot (6.5352) \cdot (0.0914) = 0.0459 = 4.59\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_3\) es \textbf{M}.\\
+
+Para el caso \(x_4 = \) (Alex, 1.90, 85), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_4) = \frac{6}{13}  \cdot \frac{1}{6} \cdot (0.0498) \cdot (0.0007) = 0.000002 = 0.0002\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_4) = \frac{7}{13}  \cdot \frac{1}{7} \cdot (0.1943) \cdot (0.0264) = 0.0007 = 0.07\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_4\) es \textbf{M}.\\
+
+Para el caso \(x_5 = \) (Cris, 1.65, 70), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_5) = \frac{6}{13}  \cdot \frac{1}{6} \cdot (3.9898) \cdot (0.0202) = 0.0062 = 0.62\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_5) = \frac{7}{13}  \cdot \frac{1}{7} \cdot (0.4472) \cdot (0.0149) = 0.0005 = 0.05\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_5\) es \textbf{F}.\\
+
+\subsection*{Estimador máximo a posteriori (MAP)}
+
+Para este estimador se tomará un valor de \(\alpha = 2\) para el atributo \textbf{nombre} en ambas clases.\\
+
+En el caso de los atributos con distribución normal (\textbf{estatura}, \textbf{peso}), el estimador se calcula como:
+
+\begin{equation}
+  \hat{\mu} = \frac{\sigma_0^2 (\sum_{i=1}^n x^{(i)} + \sigma^2 \mu_0)}{\sigma^2_0 \cdot n + \sigma^2}
+\end{equation}
+
+donde \(\sigma^2_0\) y \(\sigma^2\) se conocen de antemano.\\
+
+Para el atributo categórico \textbf{nombre}, el estimador se calcula como:
+
+\begin{equation}
+  \hat{q}_k = \frac{c_k + a_k - 1}{n + \sum_{k=1}^K - K} 
+\end{equation}
+
+donde \(K\) es el número total de clases del atributo (6) y \(n\) es el número de elementos de la clase (para \textbf{M} o \textbf{F}).\\
+
+Finalmente, el estimador para la clase \textbf{género} se obtiene mediante:
+
+\begin{equation}
+  \hat{q}_k = \frac{N_k + \alpha_k - 1}{N + \beta_k + \alpha_k - 2 }
+\end{equation}
+
+donde \(\beta_k\) es el número de elementos de la clase.\\
+
+
+Para la clase \textbf{M} tenemos:\\
+
+\begin{itemize}
+  \item Estatura:
+  \begin{itemize}
+    \item \(\mu_0 = 1.7\)
+    \item \(\sigma^2_0 = 0.3\)
+    \item \(\sigma^2 = 0.0020\)
+  \end{itemize}
+  
+  Entonces:\\
+  
+  \begin{equation}
+    \hat{\mu}_{M_{estatura}} = \frac{(0.3)(12.37) + (0.0020)(1.7)}{(7)(0.3) + 0.0020} = 1.767
+  \end{equation}
+  \item Peso:
+  \begin{itemize}
+    \item \(\mu_0 = 85.5\)
+    \item \(\sigma^2_0 = 17.0\)
+    \item \(\sigma^2 = 15.76\)
+  \end{itemize}
+  
+  Entonces:\\
+  
+  \begin{equation}
+    \hat{\mu}_{M_{peso}} = \frac{(17)(547.4) + (15.76)(85.5)}{(17)(7) + 15.76} = 79.0537
+  \end{equation}
+  \item Nombre:
+  \begin{equation}
+    \hat{q}_{Denis} = \frac{1+2-1}{7-6+12} = \frac{2}{13} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Guadalupe} = \frac{1+2-1}{7-6+12} = \frac{2}{13} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Alex} = \frac{2+2-1}{7-6+12} = \frac{3}{13} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Cris} = \frac{1+2-1}{7-6+12} = \frac{2}{13} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Juan} = \frac{2+2-1}{7-6+12} = \frac{3}{13} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Rene} = \frac{0+2-1}{7-6+12} = \frac{1}{13} 
+  \end{equation}
+\end{itemize}
+
+Para la clase \textbf{F} tenemos:\\
+
+\begin{itemize}
+  \item Estatura:
+  \begin{itemize}
+    \item \(\mu_0 = 1.5\)
+    \item \(\sigma^2_0 = 0.1\)
+    \item \(\sigma^2 = 0.0074\)
+  \end{itemize}
+  
+  Entonces:
+  
+  \begin{equation}
+    \hat{\mu}_{F_{estatura}} = \frac{(0.1)(9.7098) + (0.0074)(1.5)}{(6)(0.1) + 0.0074} = 1.6168
+  \end{equation}
+  \item Peso:
+  \begin{itemize}
+    \item \(\mu_0 = 70.3\)
+    \item \(\sigma^2_0 = 85.0\)
+    \item \(\sigma^2 = 71.0\)
+  \end{itemize}
+  
+  Entonces:
+  
+  \begin{equation}
+    \hat{\mu}_{F_{peso}} = \frac{(85)(351.9) + (71)(70.3)}{(6)(85) + 71} = 60.0736
+  \end{equation}
+  \item Nombre:
+  \begin{equation}
+    \hat{q}_{Denis} = \frac{1+2-1}{6-6+12} = \frac{1}{6} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Guadalupe} = \frac{2+2+1}{6-6+12} = \frac{1}{4} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Alex} = \frac{1+2-1}{6-6+12} = \frac{1}{6} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Cris} = \frac{1+2-1}{6-6+12} = \frac{1}{6} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Juan} = \frac{0+2-1}{6-6+12} = \frac{1}{12} 
+  \end{equation}
+  \begin{equation}
+    \hat{q}_{Rene} = \frac{1+2-1}{6-6+12} = \frac{1}{6} 
+  \end{equation}
+\end{itemize}
+
+Para la clase \textbf{género}, tenemos:\\
+
+\begin{equation}
+  \hat{q}_F = \frac{6+2-1}{13+2+2-2} = \frac{7}{15}
+\end{equation}
+
+\begin{equation}
+  \hat{q}_F = \frac{7+2-1}{13+2+2-2} = \frac{8}{15}
+\end{equation}
+
+\medskip
+
+
+Utilizado el estimador para el primer caso \(x_1 = \) (Rene, 1.68, 65), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_1) = \frac{7}{15}  \cdot \frac{1}{6} \cdot (3.5434) \cdot (0.0399) = 0.0109 = 1.09\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}:
+  \begin{equation}
+    P(M|x_1) = \frac{8}{15}  \cdot \frac{1}{13} \cdot (1.34) \cdot (0.0001) = 0.00001 = 0.001\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_1\) es \textbf{F}.\\
+
+Para el caso \(x_2 = \) (Guadalupe, 1.75, 80), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_2) = \frac{7}{15}  \cdot \frac{1}{4} \cdot (1.4008) \cdot (0.0028) = 0.0004 = 0.04\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_2) = \frac{8}{15}  \cdot \frac{2}{13} \cdot (8.2932) \cdot (0.0976) = 0.0646 = 6.46\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_2\) es \textbf{M}.\\
+
+Para el caso \(x_3 = \) (Denis, 1.80, 79), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_3) = \frac{7}{15}  \cdot \frac{1}{6} \cdot (0.4813) \cdot (0.0037) = 0.0001 = 0.01\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_3) = \frac{8}{15}  \cdot \frac{2}{13} \cdot (6.8033) \cdot (0.1004) = 0.056 = 5.6\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_3\) es \textbf{M}.\\
+
+Para el caso \(x_4 = \) (Alex, 1.90, 85), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_4) = \frac{7}{15}  \cdot \frac{1}{6} \cdot (0.0206) \cdot (0.0005) = 0.0000009 = 0.00009\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_4) = \frac{8}{15}  \cdot \frac{3}{13} \cdot (0.1076) \cdot (0.0327) = 0.0004 = 0.04\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_4\) es \textbf{M}.\\
+
+Para el caso \(x_5 = \) (Cris, 1.65, 70), tenemos:\\
+\begin{itemize}
+  \item Probabilidad para \textbf{F}:
+  \begin{equation}
+    P(F|x_5) = \frac{7}{15}  \cdot \frac{1}{6} \cdot (4.3065) \cdot (0.0236) = 0.0079 = 0.79\%
+  \end{equation}
+  \item Probabilidad para \textbf{M}: 
+  \begin{equation}
+    P(M|x_5) = \frac{8}{15}  \cdot \frac{2}{13} \cdot (0.2898) \cdot (0.0074) = 0.0001 = 0.01\%
+  \end{equation}
+\end{itemize}
+\medskip
+
+Entonces, el resultado de estimador para \(x_5\) es \textbf{F}.
+
+
+
 
 \section*{Ejercicio 2}
 
-Tenemos los siguientes eventos:
+Los resultados obtenidos fueron:\\
 
-\(A\): que la playera sea roja\\
-\(B\): que la playera sea de talla grande\\
+\begin{itemize}
+  \item Reportados como spam: 1500 (29\%)
+  \item Reportados como no spam: 3672 (71\%)
+\end{itemize}
+\medskip
+Se utilizaron dos clasificadores bayesianos: el primero usando una distribución multinomial para los regisros y el segundo usando una distribución Bernoulli, manejando los datos como incidencia de palabras en lugar de número de apariciones.\\
 
-
-Calculamos la probabilidad como:
-
-\begin{equation*}
-  P(B|A) = \frac{P(B \cap A)}{P(A)}
-\end{equation*}
-
-Entonces:
-
-\begin{align*}
-  P(B|A) &= \frac{P(B \cap A)}{P(A)}\\
-         &= \frac{\frac{3}{15}}{\frac{5}{15}}\\
-         &= \frac{3}{5}\\
-         &= 0.6
-\end{align*}
-
+El clasificador multinomial obtuvo un 95\% de precisión en la predicción sobre el conjunto de entrenamiento y un 94\% sobre el conjunto de pruebas. A su vez, el clasificador Bernoulli obtuvo un 86\% de precisión en la predicción sobre el conjunto de entrenamiento y un 84\% sobre el conjunto de pruebas. Esto puede indicarnos utilizar ambos enfoques para un análisis de textos pudiera llegar a ser adecuado; sin embargo, es clara la ventaja que conlleva el utilizar una distribución multinomial.
 
 \section*{Ejercicio 3}
 
-\subsection*{Si aprueba Matemáticas, ¿cuál es la probabilidad de que también apruebe Química?}
-
-\begin{equation*}
-  P(Q|M) = \frac{P(Q)P(M)}{P(M)} = P(Q) = 70\%
-\end{equation*}
-
-
-\subsection*{¿Cuál es la probabilidad de que apruebe Matemáticas o Química?}
-Dado que ambos eventos no son mutuamente excluyentes, se calcula la probabilidad como:
-\begin{equation*}
-  P(Q \cup M) = P(Q) + P(M) - P(Q \cap M)= 0.6 + 0.7 - 0.5 = 0.8 = 80\%
-\end{equation*}
-
-\subsection*{¿Son M y Q independientes?}
-
-De ser independientes, se cumpliría que \( P(Q \cap M) = P(Q) \cdot P(M)\), sin embargo:
-
-\begin{align*}
-  P(Q \cap M) & \not= P(Q) \cdot P(N)\\
-      0.5  & \not= 0.6 \cdot 0.7\\
-      0.5  & \not= 0.42
-\end{align*}
-
-
-\section*{Ejercicio 4}
-
-Se tienen los siguientes eventos:\\
-
-\(P\)(el sistema diga que es una persona honrada) = \(95\%\)\\
-\(P\)(el sistema diga que es un terrorista) = \(95\%\)\\
-
-Se toma como hecho que hay un terrorista en el avión. Entonces: \\
-\(P\)(ser escogido y ser terrorista) = \(\frac{1}{100}\)\\
-
-La probabilidad de que la persona escogida sea realmente un terrorista es:
-
-\(A\): el sistema dijo que la persona es terrorista\\
-\(B_1\): ser terrorista\\
-\(B_2\): ser ciudadano honrado\\
-
-Usando teorema de Bayes:
-
-\begin{align*}
-  P(B_1|A) &  = \frac{P(A|B_1)P(A)}{P(A|B_1)P(B_1)+P(A|B_2)P(B_2)}\\
-           & \\
-           & = \frac{(0.95)(\frac{1}{100})}{(0.95)(\frac{1}{100}) + (0.05)(\frac{99}{100})}\\
-           & \\
-           & = 0.16 = 16\%
-\end{align*}
-
-
-\section*{Ejercicio 5}
-
-\(A\): Prueba salió positiva\\
-\(B_1\): Paciente infectado\\
-\(B_2\): Paciente no infectado\\
-
-Usando teorema de Bayes:\\
-
-\begin{align*}
-  P(B_1|A) & = \frac{P(A|B_j)P(B_i)}{\sum P(A|B_i)P(B_i)}\\
-           & \\ 
-           &  = \frac{P(A|B_1)P(A)}{P(A|B_1)P(B_1)+P(A|B_2)P(B_2)}\\
-           & \\
-           & = \frac{(0.99)(\frac{1}{100})}{(0.99)(\frac{1}{100}) + (0.01)(\frac{99}{100})}\\
-           & \\
-           & = 0.0901 = 9.01\%
-\end{align*}
-
-
-\section*{Ejercicio 6}
-
-La probabilidad de que el último pasajero se siente en su lugar asignado es de \(50\%\). \\
-
-Tomando como base el caso en el que solo hay dos pasajeros y dos asientos, la probabilidad de que el último pasajero se siente en su lugar correcto es de 50\%.\\
-
-Para cualquier caso donde \(n > 2\), si la primera persona en la fila se sienta en su lugar asignado, entonces todas las personas irán tomando su lugar asignado y la última persona podrá sentarse en el lugar correcto. Pero si la primera persona se sienta en un lugar que no le corresponde (por ejemplo, en el asiento de la persona 10 en la fila), entonces las personas 2 hasta la 9 pueden sentarse en su lugar correcto y la persona 10 tendrá que buscar un asiento libre. Entonces, la persona 10 podrá sentarse en el asiento de la persona 1 o en el asiento del último de la fila, lo cual da una probabilidad de 50\% de sentarse en cualquiera de dichos asientos. Si escoge alguno diferente, ocurrirá el mismo proceso de decisión para la nueva persona que tenga que buscar un asiento.
-\section*{Ejercicio 7}
-
-Definimos la ``carga'' de la moneda como un valor que modifica la probabilidad de los eventos de la moneda. Por ejemplo, para cargar la moneda para que siempre caiga ``sol'' tenemos:
-
-\begin{equation*}
-  \begin{split}
-  P(S_c) &= \frac{1}{2} + x\\
-  P(A_c) &= \frac{1}{2} - x\\
-  \end{split}
-\end{equation*}
-
-Para ver que la apuesta sigue siendo justa, probemos primero el caso donde ambas monedas caen iguales:
-
-\begin{equation*}
-\begin{split}
-  P(iguales) &= P(S_j\cap S_c) + P(A\cap A_c)\\
-   &= (P(S) \times P(S_c)) + (P(A_j) \times P(A_c))\\
-   &= ((\frac{1}{2}) \times (\frac{1}{2} + x)) + ((\frac{1}{2}) \times (\frac{1}{2} - x))\\
-   &= (\frac{1}{4} + \frac{x}{2}) + (\frac{1}{4} - \frac{x}{2})\\
-   &= \frac{2}{4}\\
-   &= \frac{1}{2}\\
-  \end{split}
-\end{equation*}
-
-Ahora, probemos la apuesta de que caerán diferentes:
-
-\begin{equation*}
-  \begin{split}
-    P(diferentes) &= P(S\cap A_c) + P(A\cap S_c)\\
-    &= (P(S) \times P(A_c)) + (P(A) \times P(S_c))\\
-    &= ((\frac{1}{2}) \times (\frac{1}{2} - x)) + ((\frac{1}{2}) \times (\frac{1}{2} + x))\\
-    &= (\frac{1}{4} - \frac{x}{2}) + (\frac{1}{4} + \frac{x}{2})\\
-    &= \frac{2}{4}\\
-    &= \frac{1}{2}\\
-  \end{split}
-  \end{equation*}
-
-De esta manera, se puede ver que la carga no afecta las probabilidades de cada apuesta.
-
-
-\section*{Ejercicio 8}
-
-\(A\): Mujer prefiere perros\\
-\(B\): Hombre prefiere perros\\
-\(C\): Estudiante prefiera perros\\
-
-\(P(A) = \frac{20}{20+26+6} = \frac{5}{13}\)\\\\
-\(P(B) = \frac{36}{36+10+2} = \frac{3}{4}\)\\\\
-\(P(C) = P(\texttt{ser mujer})P(A)+P(\texttt{ser hombre})P(B) = \frac{52}{100} \cdot \frac{5}{13} + \frac{48}{100} \cdot \frac{3}{4} = \frac{14}{25} = 0.56 = 56\%\)
-
-
-\section*{Ejercicio 9}
-
-Nombramos los eventos de la siguiente manera:\\
-
-\(A\): elegir Matemáticas\\
-\(B\): elegir Física\\
-\(C\): elegir Química\\
-
-Sabemos que \(P(A) = P(B)\) y \(P(C) = 2P(A)\). Entonces:
-
-\begin{align*}
-  P(\Omega)  & = P(A) + P(B) + P(C)\\
-        &= P(A) + P(A) + 2(PA)\\
-        &= 4P(A)
-\end{align*}
-
-De este modo
-
-\begin{align*}
-  P(A)  & = \frac{1}{4}\\
-  P(B)  & = \frac{1}{4}\\
-  P(C)  & = \frac{1}{2}
-\end{align*}
-
-\section*{Ejercicio 10}
-
-La probabilidad de ganar aumenta si el concursante decide cambiar de puerta. Esto es debido a que la probabilidad de elegir la puerta ganadora en el primer intento es de \(\frac{1}{3}\). Sin embargo, al saber que una de las dos puertas disponibles no tiene el premio, la probabilidad correspondiente a dicha puerta (en este caso, la 3), se asigna a la puerta restante (la 2), por lo que esta última puerta tiene más probabilidad de esconder el premio (\(\frac{2}{3}\)).
-
-\section*{Ejercicio 11}
-
-Para hacer el cálculo del la probabilidad del evento $A'$ donde dos personas no comparten su cumpleaños, tenemos:
-
-\begin{equation}
-  P(A') = (\frac{1}{365})^n \cdot (365 \cdot 364 \cdot \cdots \cdot 365-(n-1))
-\end{equation}
-
-donde $n$ es el número total de personas. Por lo tanto, la probabilidad de que al menos dos personas compartan cumpleaños es \(1-P(A')\).
-
-De esta manera, para el caso de \(n = 10\) tenemos:
-
-\begin{equation}
-  P(A') = (\frac{1}{365})^{10} \cdot (365 \cdot 364 \cdot ... \cdot 356) = 0.883
-\end{equation}
-
-por lo que la probabilidad de que al menos dos personas compartan cumpleaños de un total de 10 es:
-
-\begin{equation}
-  1 - P(A') = 0.11694
-\end{equation}
-
-Para el caso de \(n = 23\) tenemos:
-
-\begin{equation}
-  P(A') = (\frac{1}{365})^{23} \cdot (365 \cdot 364 \cdot ... \cdot 341) = 0.493
-\end{equation}
-
-por lo que la probabilidad es:
-
-\begin{equation}
-  1 - P(A') = 0.507
-\end{equation}
-
-Para el caso de \(n = 50\) tenemos:
-
-\begin{equation}
-  P(A') = (\frac{1}{365})^{50} \cdot (365 \cdot 364 \cdot ... \cdot 314) = 0.03
-\end{equation}
-
-por lo que la probabilidad es:
-
-\begin{equation}
-  1 - P(A') = 0.97
-\end{equation}
-
-Finalmente, Para el caso de \(n = 75\) tenemos:
-
-\begin{equation}
-  P(A') = (\frac{1}{365})^{75} \cdot (365 \cdot 364 \cdot ... \cdot 289) = 0.003
-\end{equation}
-
-por lo que la probabilidad es:
-
-\begin{equation}
-  1 - P(A') = 0.997
-\end{equation}
-
-\section*{Ejercicio 12}
-
-La probabilidad de cualquier evento al tirar dos dados es de \(\frac{1}{36}\). De este modo:
-
-\begin{align*}
-  P(max\{a,b\} = 1)  &= P(\{1,1\}) = \frac{1}{36}\\
-\end{align*}
-
-\begin{align*}
-  P(max\{a,b\} = 2)  &= P(\{1,2\},\{2,1\},\{2,2\}) = 3(\frac{1}{36}) = \frac{1}{12}\\
-\end{align*}
-
-\begin{align*}
-  P(max{a,b} = 3)  &= P(\{1,3\},\{3,1\},\{2,3\},\{3,2\},\{3,3\}) = 5(\frac{1}{36}) = \frac{5}{36}\\
-\end{align*}
-
-\begin{align*}
-  P(max\{a,b\} = 4 ) &= P(\{1,4\},\{4,1\},\{2,4\},\{4,2\},\{4,3\},\{3,4\},\{4,4\}) = 7(\frac{1}{36}) = \frac{7}{36}\\
-\end{align*}
-
-
-\begin{align*}
-  P(max\{a,b\} = 5)  &= P(\{1,5\},\{5,1\},\{2,5\},\{5,2\},\{5,3\},\{3,5\},\{5,4\},\{4,5\},\{5,5\}) = 9(\frac{1}{36}) = \frac{9}{36}\\
-\end{align*}
-
-
-\begin{align*}
-  P(max\{a,b\} = 6)  &= P(\{1,6\},\{6,1\},\{2,6\}\\
-                  & \{6,2\},\{6,3\},\{3,6\},\{6,4\},\{4,6\},\{6,5\},\{5,6\},\{6,6\}) = 11(\frac{1}{36}) = \frac{11}{36}
-\end{align*}
-
-
-
-\section*{Ejercicio 13}
-
-\begin{proof}
-  Por definición de esperanza matemática de dos variables aleatorias independientes, se tiene que:
-
-  \begin{equation*}
-    E(XY) = E(X)E(Y)
-  \end{equation*}
-
-  Entonces, dado que la covarianza para dos variables aleatorias está definida como \(cov(XY) = E(XY) - E(X)E(Y)\), se sigue:
-  \begin{align*}
-    cov(XY) & = E(XY) - E(X)E(Y)\\
-            & = E(X)E(Y) - E(X)E(Y)\\
-            & = 0
-  \end{align*}
-
-\end{proof}
-
-\section*{Ejercicio 14}
-
-Se utiliza una distribución binomial para resolver este problema.
-
-\subsection*{10, 20, 40 aciertos si el examen tiene 50 preguntas}
-
-Para 10 aciertos, tenemos:
-
-\begin{equation*}
-  \begin{split}
-  b(10;50;0.2)&={50\choose 10} \times 0.2^{10} \times (1 - 0.2)^{50-10}\\
-  &=(\frac{50!}{10!\times(50-10)!}) \times 0.2^{10} \times 0.8^{40}\\
-  &=(\frac{50!}{10!\times(40)!}) \times 0.2^{10} \times 0.8^{40}\\
-  &=(\frac{50!}{10!\times(40)!}) \times 0.2^{10} \times 0.8^{40}\\
-  &= 0.13981900517
-  \end{split} 
-\end{equation*}
-
-Para 20 aciertos:
-
-\begin{equation*}
-\begin{split}
-b(20;50;0.2)&={50\choose 20} \times 0.2^{20} \times (1 - 0.2)^{50-20}\\
-&=(\frac{50!}{20!\times(50-20)!}) \times 0.2^{20} \times 0.8^{30}\\
-&=(\frac{50!}{20!\times(30)!}) \times 0.2^{20} \times 0.8^{30}\\
-&=(\frac{50!}{20!\times(30)!}) \times 0.2^{20} \times 0.8^{30}\\
-&= 0.00061177215
-\end{split} 
-\end{equation*}
-
-Para 40 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(40;50;0.2)&={50\choose 40} \times 0.2^{40} \times (1 - 0.2)^{50-40}\\
-  &=(\frac{50!}{40!\times(50-40)!}) \times 0.2^{40} \times 0.8^{10}\\
-  &=(\frac{50!}{40!\times(10)!}) \times 0.2^{40} \times 0.8^{10}\\
-  &=(\frac{50!}{40!\times(10)!}) \times 0.2^{40} \times 0.8^{10}\\
-  &\approx 1.2 \times 10^{-19}
-  \end{split} 
-\end{equation*}
-
-\subsection*{10, 20, 40 aciertos si el examen tiene 40 preguntas}
-
-Para 10 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(10;40;0.2)&={40\choose 10} \times 0.2^{10} \times (1 - 0.2)^{40-10}\\
-  &=(\frac{40!}{10!\times(40-10)!}) \times 0.2^{10} \times 0.8^{30}\\
-  &=(\frac{40!}{10!\times(30)!}) \times 0.2^{10} \times 0.8^{30}\\
-  &=(\frac{40!}{10!\times(30)!}) \times 0.2^{10} \times 0.8^{30}\\
-  &= 0.10745373771
-  \end{split} 
-\end{equation*}
-
-Para 20 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(20;40;0.2)&={40\choose 20} \times 0.2^{20} \times (1 - 0.2)^{40-20}\\
-  &=(\frac{40!}{20!\times(40-20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &=(\frac{40!}{20!\times(20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &=(\frac{40!}{20!\times(20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &= 0.00001666462
-  \end{split} 
-\end{equation*}
-
-
-Para 40 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(20;40;0.2)&={40\choose 40} \times 0.2^{40} \times (1 - 0.2)^{40-40}\\
-  &=(\frac{40!}{40!\times(40-40)!}) \times 0.2^{40} \times 0.8^{0}\\
-  &=(\frac{40!}{40!\times(0)!}) \times 0.2^{40} \\
-  &=(\frac{40!}{40!}) \times 0.2^{40} \\
-  &= 0.2^{40} \\
-  &\approx 1.1 \times 10^{-26}
-  \end{split} 
-\end{equation*}
-
-\subsection*{10, 20, 40 errores si el examen tiene 40 preguntas}
-
-Cambiando el enfoque a aciertos, tenemos 30, 20 y 0.\\
-
-Para 30 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(30;40;0.2)&={40\choose 30} \times 0.2^{30} \times (1 - 0.2)^{40-30}\\
-  &=(\frac{40!}{30!\times(40-30)!}) \times 0.2^{30} \times 0.8^{10}\\
-  &=(\frac{40!}{30!\times(10)!}) \times 0.2^{30} \times 0.8^{10}\\
-  &=(\frac{40!}{30!\times(10)!}) \times 0.2^{30} \times 0.8^{10}\\
-  &\approx 9 \times 10^{-14}
-  \end{split} 
-\end{equation*}
-
-Para 20 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(20;40;0.2)&={40\choose 20} \times 0.2^{20} \times (1 - 0.2)^{40-20}\\
-  &=(\frac{40!}{20!\times(40-20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &=(\frac{40!}{20!\times(20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &=(\frac{40!}{20!\times(20)!}) \times 0.2^{20} \times 0.8^{20}\\
-  &= 0.00001666462
-  \end{split} 
-\end{equation*}
-
-Para 0 aciertos:
-
-\begin{equation*}
-  \begin{split}
-  b(0;40;0.2)&={40\choose 0} \times 0.2^{0} \times (1 - 0.2)^{40-0}\\
-  &=(\frac{40!}{0!\times(40-0)!}) \times 0.8^{40}\\
-  &=(\frac{40!}{40!}) \times 0.8^{40}\\
-  &= 0.8^{40}\\
-  &= 0.0001329228
-  \end{split} 
-\end{equation*}
-
-
-\section*{Ejercicio 15}
-
-Sabiendo que los datos tienen una distribución normal, se aplican las transformaciones $z$ debido a que la media es diferente de 0 y la desviación estándar es diferente de 1.
-
-\subsection*{Se encuentre entre 160cm y 180cm}
-
-Para el límite inferior tenemos:
-
-\begin{equation*}
-  \begin{split}
-  z_{\text{min}} &= \frac{160 - 169.83}{4.5}\\
-  &= -2.18\overline{4}\\
-  \end{split}
-\end{equation*}
-
-Para el límite superior:
-
-\begin{equation*}
-  \begin{split}
-  z_{\text{max}} &= \frac{180 - 169.83}{4.5}\\
-  &= 2.26\\
-  \end{split}
-\end{equation*}
-
-Así, la probabilidad es:
-
-
-\begin{equation*}
-  P(z < 2.26) - P(z < -2.18) = 0.9881-0.0145 = 0.9736
-\end{equation*}
-
-\subsection*{Sea de al menos 150cm}
-
-Obteniendo el valor de \(z\) correspondiente, tenemos:
-
-\begin{equation*}
-  \begin{split}
-  z &= \frac{150 - 169.83}{4.5}\\
-  &= -4.407\\
-  \end{split}
-\end{equation*}
-
-Dado que buscamos la probabilidad de que la estatura sea mayor o igual a 150cm:
-
-\begin{equation*}
-  \begin{split}
-  P(z < -4.407)&\approx 0\\
-  1 - P(z < -4.407)&\approx 1-0\\
-  &\approx 1
-  \end{split}
-\end{equation*}
-
-\subsection*{Sea de máximo 180cm}
-
-Obteniendo el valor \(z\) asociado, se obtiene la probabilidad directamente de la tabla:
-
-
-\begin{equation*}
-  \begin{split}
-  z &= \frac{180 - 169.83}{4.5}\\
-  &= 2.26\\
-  \end{split}
-\end{equation*}
-
-\begin{equation*}
-  \begin{split}
-  P(z < 2.26)&= 0.9881\\
-  \end{split}
-\end{equation*}
-
-\subsection*{Sea mayor a 160cm}
-
-Obteniendo el valor \(z\) asociado, se obtiene la probabilidad compelementaria (\(1 - P(z)\)):
-
-
-\begin{equation*}
-  \begin{split}
-  z &= \frac{160 - 169.83}{4.5}\\
-  &= -2.18\overline{4}\\
-  \end{split}
-\end{equation*}
-
-\begin{equation*}
-  \begin{split}
-  P(z < -2.18)&= 0.0145\\
-  \end{split}
-\end{equation*}
-
-Por lo tanto, la probabilidad es (\(1 - 0.0145 = 0.9855\))
-
-\subsection*{Sea menor a 190cm}
-
-Nuevamente obteniendo el valor \(z\) asociado, se obtiene la probabilidad directamente de la tabla:
-
-
-\begin{equation*}
-  \begin{split}
-  z &= \frac{190 - 169.83}{4.5}\\
-  &= 4.4822\\
-  \end{split}
-\end{equation*}
-
-Entonces:
-
-\begin{equation*}
-  P(z < 4.4822) \approx 1
-\end{equation*}
-
-
-
-\section*{Ejercicio 16}
-
-Denotamos el evento de que llueva hoy como H y el evento de que llueva mañana como M.
-
-\subsection*{Que llueva hoy o mañana}
-
-Dado que sabemos que la probabilidad de que no llueva ninguno de los dos días es 0.3, calculamos la probabilidad complemento:
-
-\begin{equation*}
-  1 - P(P(\overline{H} \cap \overline{M})) = 1 - 0.3 = 0.7 = 70\%
-\end{equation*}
-
-\subsection*{Que llueva hoy y mañana}
-
-Para calcular la probabilidad de ambos eventos, tenemos:
-
-\begin{equation*}
-	\begin{split}
-		P(H\cup M) &= P(H) + P(M) - P(H\cap M)\\
-		P(H\cup M) + P(H\cap M) &= P(H) + P(M)\\
-		P(H\cap M) &= P(H) + P(M) - P(H\cup M)\\
-	\end{split}
-\end{equation*}
-
-Por lo tanto:
-
-\begin{equation*}
-  \begin{split}
-  P(H\cap M) &= 0.6 + 0.5 - 0.7\\
-  &= 0.4\\
-  \end{split}
-\end{equation*}
-
-\subsection*{Que llueva hoy pero no mañana}
-
-Utilizando la probabilidad encontrada en el punto anterior, tenemos:
-
-\begin{equation*}
-  \begin{split}
-  P(H) - P(H\cap M) &= 0.6 - 0.4 = 0.2\\
-  \end{split}
-\end{equation*}
-
-\subsection*{Que llueva hoy o mañana, pero no ambas}
-
-Con las probabilidades conocidas para el evento de que llueva en alguno de los dos días y para el evento de que llueva ambos días, tenemos:
-
-\begin{equation}
-  \begin{split}
-    P(H\cup M) - P(H\cap M) &= 0.7 - 0.4 = 0.3\\
-  \end{split}
-\end{equation}
-
-\section*{Ejercicio 17}
-
-\subsection*{¿Cuál es la probabilidad de que falle un componente en 25 horas?}
-
-Dado que el promedio para 100 horas es de 8 eventos, para 25 horas tenemos que el promedio es de \(\lambda = 2\). Entonces:
-
-\begin{equation*}
-	\begin{split}
-	P(1) &= \frac{2^1e^{-2}}{1!}\\
-	&= \frac{2e^{-2}}{1}\\
-	&= 2e^{-2}\\
-	&\approx 0.2711\\
-	\end{split}
-\end{equation*}
-
-
-\subsection*{¿Cuál es la probabilidad de que fallen no más de 2 componentes en 50 horas?}
-
-En este caso, se tiene \(\lambda = 4\). Se expresa como la suma de las probabilidades de que no falle ningún componente, que falle uno y que fallen dos:
-
-\begin{equation*}
-  \begin{split}
-  P(x\leq2)&= \sum_{n=0}^{2} \frac{4^ne^{-4}}{n!}\\
-   &= \frac{4^0e^{-4}}{0!} + \frac{4^1e^{-4}}{1!} + \frac{4^2e^{-4}}{2!}\\
-  &= \frac{1 e^{-4}}{1} + \frac{4e^{-4}}{1} + \frac{4^2e^{-4}}{2}\\
-  &= e^{-4} + 4e^{-4} + 8e^{-4}\\
-  &\approx 0.238\\
-  \end{split}
-\end{equation*}
-
-\subsection*{¿Cuál es la probabilidad de que fallen por lo menos 10 en 125 horas?}
-
-En este caso, se tiene \(\lambda = 10\). Se expresa como el complemento de la suma de las probabilidades de que no falle ningún componente hasta 9:
-
-\begin{equation*}
-  \begin{split}
-  P(x\geq10)&= 1 - P(x<10)\\
-  \end{split}
-  \end{equation*}
-  \begin{equation*}
-  \begin{split}
-  P(x<10)&= \sum_{n=0}^{9} \frac{10^ne^{-10}}{n!}\\
-  &\approx 0.54207\\
-  \end{split}
-\end{equation*}
-
-
-\section*{Ejercicio 18}
-
-La probabilidad de sacar un maestro la primera vez y un maestro la segunda vez se expresa como:
-
-\begin{equation*}
-	\frac{5}{14} \cdot \frac{4}{13} = \frac{20}{182} = 0.1098
-\end{equation*}
-
-
-\section*{Ejercicio 19}
-
-
-Para escoger la primera partición, tenemos:
-
-\begin{equation}
-  \binom{4}{1} \cdot \binom{48}{12}
-\end{equation}
-
-Para la segunda partición, tenemos:
-
-\begin{equation}
-  \binom{3}{1} \cdot \binom{36}{12}
-\end{equation}
-
-Para la tercera partición:
-
-\begin{equation}
-  \binom{2}{1} \cdot \binom{24}{12}
-\end{equation}
-
-La cuarta partición es igual a:
-
-\begin{equation}
-  \binom{1}{1} \cdot \binom{12}{12} = 1
-\end{equation}
-
-Por lo tanto, la probabilidad total es:
-
-\begin{equation}
-  \frac{4 \cdot {48\choose 12} + 3\cdot{36\choose 12} + 2\cdot{24\choose 12}}{{52\choose 13}{39\choose 13}{26\choose 13}}  = 0.105
-\end{equation}
-
-\section*{Ejercicio 20}
-
-Dado que se sabe que si la persona sospechosa tiene la característica es culpable, entonces:
-
-\begin{align*}
-  P(\texttt{culp|caract}) & = \frac{P(\texttt{caract|culp})P(\texttt{culp})}{P(\texttt{caract|culp})P(\texttt{culp})+P(\texttt{caract|inoc})P(\texttt{inoc})}\\
-           & \\ 
-           &  = \frac{1 \cdot \frac{3}{5}}{1 \cdot \frac{3}{5}+\frac{1}{5}\cdot\frac{2}{5}}\\
-           & \\
-           & = \frac{15}{17}\\
-\end{align*}
+Se utilizaron tres conjuntos de prueba. Cada uno de ellos fue manipulado para completar los datos faltantes en tres formas: utilizando la media, la mediana y la moda. En los tres casos el clasificador obtuvo resultados de precisión del 100\% tanto con el conjunto de prueba como con el conjunto de entrenamiento. Esto pudiera indicar que el total de datos pudiera ser pequeño para el problema que se quiere resolver.
 
 \end{document}
 
