@@ -1,0 +1,126 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\decimalpoint
+\usepackage{amsfonts}
+\usepackage{float}
+\usepackage{mathptmx}
+\usepackage{booktabs}
+
+%\usepackage{heuristica}
+%\usepackage[heuristica,vvarbb,bigdelims]{newtxmath}
+
+\usepackage[T1]{fontenc}
+\renewcommand*\oldstylenums[1]{\textosf{#1}}
+\usepackage[margin=1.3in]{geometry}
+\usepackage{amsthm}
+\usepackage{marvosym}
+\usepackage{bm}
+
+\renewcommand\qedsymbol{\Squarepipe}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}[section]
+\newtheorem*{thm}{Teorema}
+
+
+\setlength\parindent{0pt}
+
+\newcounter{paragraphnumber}
+\newcommand{\para}{%
+  \vspace{10pt}\noindent{\bfseries\refstepcounter{paragraphnumber}\theparagraphnumber.\quad}%
+}
+
+%\setsecheadstyle{\large\bfseries}
+%\setsubsecheadstyle{\bfseries}
+
+\setlength\parindent{0pt}
+
+\pagenumbering{gobble}
+
+
+\usepackage{enumitem}
+\setlist{nosep}
+
+\usepackage{xcolor}
+
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks,
+  linkcolor={red!50!black},
+  citecolor={blue!50!black},
+  urlcolor={green!50!black}
+}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\begin{document}
+
+
+
+\begin{center}
+  {\large Aprendizaje Automatizado}\\
+  \vspace{0.2cm}
+  {\large\bfseries Tarea 4: Gráficos Probabilísticos}\\
+  \vspace{0.2cm}
+  {\large PCIC - UNAM}\\
+  \vspace{0.5cm}
+  {\itshape 20 de mayo de 2020}\\
+  \vspace{0.5cm}
+  Diego de Jesús Isla López\\
+  (\href{mailto:dislalopez@gmail.com}{\itshape dislalopez@gmail.com})\\
+  (\href{mailto:diego.isla@comunidad.unam.mx}{\itshape diego.isla@comunidad.unam.mx})\\
+\end{center}
+
+
+\section*{Ejercicio 1}
+
+Se tienen las siguientes variables:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|}
+    \toprule
+    Variable & Dominio \\
+    \midrule
+    \(A\) (alarma) & \{0,1\} \\
+    \(D_A\) (alarma defectuosa) & \{0,1\} \\
+    \(D_I\) (indicador defectuoso) & \{0,1\} \\
+    \( I \) (lectura del indicador) & \(\mathbb{Z}\) \\
+    \( T \) (temperatura real) & \(\mathbb{Z}\) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection*{Primer modelo}
+
+La probabilidad conjunta del modelo queda expresada como:
+
+\begin{equation}
+  P(T,I,D_I,A,D_A) = P(T)\cdot P(I|T) \cdot P(A|I) \cdot P(D_I|T)\cdot P(A|D_A) \cdot P(D_A) 
+\end{equation}
+
+\subsection*{Segundo modelo}
+
+La probabilidad conjunta del modelo queda expresada como:
+
+\begin{equation}
+  P(T,I,D_I,A,D_A) = P(T)\cdot P(I|T) \cdot P(A|I) \cdot P(D_I|T)\cdot P(A|D_A) \cdot P(D_A) 
+\end{equation}
+
+\subsection*{Tercer modelo}
+
+
+
+\section*{Ejercicio 2}
+
+\begin{itemize}
+  \item \(T  \perp\!\!\!\perp F | D\)
+\end{itemize}
+
+\section*{Ejercicio 3}
+
+
+\end{document}
+
