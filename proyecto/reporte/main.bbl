@@ -1,0 +1,28 @@
+\begin{thebibliography}{1}
+
+\bibitem{girshick}
+R.~{Girshick}, J.~{Donahue}, T.~{Darrell}, and J.~{Malik}.
+\newblock Rich feature hierarchies for accurate object detection and semantic
+  segmentation.
+\newblock In {\em 2014 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 580--587, 2014.
+
+\bibitem{howard2017mobilenets}
+Andrew~G. Howard, Menglong Zhu, Bo~Chen, Dmitry Kalenichenko, Weijun Wang,
+  Tobias Weyand, Marco Andreetto, and Hartwig Adam.
+\newblock Mobilenets: Efficient convolutional neural networks for mobile vision
+  applications, 2017.
+
+\bibitem{redmon2015look}
+Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi.
+\newblock You only look once: Unified, real-time object detection, 2015.
+
+\bibitem{yosinski2014transferable}
+Jason Yosinski, Jeff Clune, Yoshua Bengio, and Hod Lipson.
+\newblock How transferable are features in deep neural networks?, 2014.
+
+\bibitem{zhao2018object}
+Zhong-Qiu Zhao, Peng Zheng, Shou tao Xu, and Xindong Wu.
+\newblock Object detection with deep learning: A review, 2018.
+
+\end{thebibliography}

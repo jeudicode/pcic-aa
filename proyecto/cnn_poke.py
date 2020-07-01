@@ -1,17 +1,27 @@
+##################################################################################
+#  Who's that Pokemon? (Implementacion con redes neuronales convolucionales)     #
+#  Diego Isla Lopez                                                              #
+#  IIMAS @ UNAM                                                                  #
+#  PCIC 2020-II                                                                  #
+##################################################################################
+
+
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import seaborn as sns
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras import models
 from tensorflow.keras import optimizers
 from tensorflow.keras.preprocessing import image
+from sklearn.metrics import confusion_matrix
 import tensorflow_hub as hub
 import os
 import cv2
 
 # dataset de entrenamiento
-train_path = "dataset/pokemon_project/train"
+train_path = "dataset/pokemon_project/train_aug"
 
 # dataset para prueba (siluetas)
 test_path = "dataset/pokemon_project/test"
@@ -21,12 +31,15 @@ train_labels = os.listdir(train_path)
 
 print(train_labels)
 
-image_size = (224, 224)
-batch_size = 32
+image_size = (224, 224)  # tamaño estandarizado para las imagenes
+batch_size = 32  # tamaño de lote para entrenamiento
+
+
+# Se determinan los conjuntos de entrenamiento y validacion de dataset de entrenamiento
 
 datagen_kwargs = dict(
     rescale=1./255,
-    validation_split=.20,
+    validation_split=.30,  # 70% entrenamiento, 30% validacion
 )
 
 valid_datagen = keras.preprocessing.image.ImageDataGenerator(**datagen_kwargs)
@@ -36,7 +49,6 @@ valid_generator = valid_datagen.flow_from_directory(
     subset="validation",
     shuffle=True,
     target_size=image_size,
-    # color_mode="grayscale",
 )
 
 train_datagen = keras.preprocessing.image.ImageDataGenerator(**datagen_kwargs)
@@ -46,8 +58,10 @@ train_generator = train_datagen.flow_from_directory(
     subset="training",
     shuffle=True,
     target_size=image_size,
-    # color_mode="grayscale",
 )
+
+
+# Se carga el dataset de prueba
 
 
 test_datagen = keras.preprocessing.image.ImageDataGenerator()
@@ -56,9 +70,10 @@ test_generator = test_datagen.flow_from_directory(
     test_path,
     shuffle=True,
     target_size=image_size,
-
-    # color_mode="grayscale",
 )
+
+
+# Se calculan los pasos de entrenamiento y evaluación
 
 steps_per_epoch = np.ceil(train_generator.samples / train_generator.batch_size)
 
@@ -77,14 +92,24 @@ print(label_batch.shape)
 
 print(train_generator.class_indices)
 
-model = keras.Sequential([hub.KerasLayer("https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4", output_shape=[1280],
-                                         trainable=False), tf.keras.layers.Dropout(0.4), tf.keras.layers.Dense(train_generator.num_classes, activation="softmax")])
+# Cargamos modelo pre-entrenado
+
+load = hub.load("model")
+model = keras.Sequential(
+    [hub.KerasLayer(load, output_shape=[1280],
+                    trainable=False),
+        tf.keras.layers.Dropout(0.4),
+        tf.keras.layers.Dense(train_generator.num_classes,
+                              activation="softmax")
+     ]
+)
 
 model.build([None, 224, 224, 3])
 model.summary()
 
-optimizer = tf.keras.optimizers.Adam(lr=1e-3)
 
+# se utiliza gradiente estocastico como metodo de optimizacion
+optimizer = tf.keras.optimizers.SGD()
 model.compile(
     optimizer=optimizer,
     loss="categorical_crossentropy",
@@ -94,74 +119,12 @@ model.compile(
 
 hist = model.fit(
     train_generator,
-    epochs=50,
+    epochs=6,
     verbose=1,
     steps_per_epoch=steps_per_epoch,
     validation_data=valid_generator,
     validation_steps=val_steps_per_epoch
 ).history
-
-
-# modelo custom
-
-# train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#     train_path,
-#     validation_split=0.2,
-#     subset="training",
-#     seed=1337,
-#     image_size=image_size,
-#     batch_size=batch_size,
-# )
-# val_ds = tf.keras.preprocessing.image_dataset_from_directory(
-#     train_path,
-#     validation_split=0.2,
-#     subset="validation",
-#     seed=1337,
-#     image_size=image_size,
-#     batch_size=batch_size,
-# )
-
-
-# model = models.Sequential()
-# model.add(layers.Dense(units=512, activation="relu", input_shape=image_size))
-# model.add(layers.Dense(units=10, activation="softmax"))
-
-# model.build([None, 224, 224, 3])
-# model.summary()
-
-# # parametros de metodo de optimizacion
-# sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-
-# # parametros del procedimiento de aprendizaje (incluye que optimizador usar)
-# model.compile(loss='mean_squared_error',  optimizer=sgd)
-
-# model = models.Sequential()
-# model.add(layers.Conv2D(32, kernel_size=(3, 3),
-#                         activation='relu', input_shape=image_size))
-# model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-# model.add(layers.Dropout(0.25))
-# model.add(layers.Conv2D(64, kernel_size=(3, 3), activation='relu'))
-# model.add(layers.MaxPooling2D(pool_size=(2, 2)))
-# model.add(layers.Dropout(0.25))
-# model.add(layers.Flatten())
-# model.add(layers.Dense(256, activation='relu'))
-# model.add(layers.Dense(8, activation='softmax'))
-
-# # Compile the model
-# model.compile(loss="sparse_categorical_crossentropy",
-#               optimizer=tf.keras.optimizers.Adam(lr=1e-3),
-#               metrics=['accuracy'])
-
-# hist = model.fit(
-#     train_generator,
-#     epochs=10,
-#     shuffle=True,
-#     batch_size=32,
-#     verbose=2,
-#     validation_data=valid_generator,
-#     validation_steps=val_steps_per_epoch
-
-# )
 
 
 # graficando histórico
@@ -170,8 +133,8 @@ plt.figure()
 plt.ylabel("Loss(training and validation)")
 plt.xlabel("Training Steps")
 plt.ylim([0, 50])
-plt.plot(hist["loss"])
-plt.plot(hist["val_loss"])
+plt.plot(hist["loss"], label="loss")
+plt.plot(hist["val_loss"], label="loss in validation")
 
 plt.show()
 
@@ -179,8 +142,8 @@ plt.figure()
 plt.ylabel("Accuracy(training and validation)")
 plt.xlabel("Training Steps")
 plt.ylim([0, 1])
-plt.plot(hist["acc"])
-plt.plot(hist["val_acc"])
+plt.plot(hist["acc"], label="accuracy")
+plt.plot(hist["val_acc"], label="accuracy in validation")
 
 plt.show()
 
@@ -229,8 +192,8 @@ plt.show()
 test_loss, test_accuracy = model.evaluate(
     test_generator, steps=test_steps_per_epoch)
 
-print("Test loss: {: .2f}".format(final_loss))
-print("Test accuracy: {: .2f} %".format(final_accuracy * 100))
+print("Test loss: {: .2f}".format(test_loss))
+print("Test accuracy: {: .2f} %".format(test_accuracy * 100))
 
 
 test_image_batch, test_label_batch = next(iter(test_generator))
@@ -261,4 +224,17 @@ for n in range((len(predicted_labels)-2)):
 _ = plt.suptitle("Model predictions(green: correct, red: incorrect)")
 
 
+plt.show()
+
+
+print(predicted_labels)
+print(test_label_batch)
+
+# Confusion matrix
+C = confusion_matrix(predicted_ids, true_label_ids)
+print(C)
+
+plt.figure(figsize=(8, 6.5))
+plt.title('Confusion Matrix (log scale)')
+sns.heatmap(np.log(C+1), xticklabels=np.arange(10), yticklabels=np.arange(8))
 plt.show()

@@ -12,9 +12,9 @@ import h5py
 # --------------------
 # tunable-parameters
 # --------------------
-images_per_class = 226
+images_per_class = 200
 fixed_size = tuple((224, 224))
-train_path = "dataset/pokemon_project/train"
+train_path = "dataset/pokemon_project/train_aug"
 h5_data = 'output/data.h5'
 h5_labels = 'output/labels.h5'
 bins = 8
@@ -51,6 +51,29 @@ def fd_histogram(image, mask=None):
     cv2.normalize(hist, hist)
     # return the histogram
     return hist.flatten()
+
+
+def fd_kaze(image, vector_size=32):
+    alg = cv2.KAZE_create()
+    # Dinding image keypoints
+    kps = alg.detect(image)
+    # Getting first 32 of them.
+    # Number of keypoints is varies depend on image size and color pallet
+    # Sorting them based on keypoint response value(bigger is better)
+    kps = sorted(kps, key=lambda x: -x.response)[:vector_size]
+    # computing descriptors vector
+    kps, dsc = alg.compute(image, kps)
+    # Flatten all of them in one big vector - our feature vector
+    dsc = dsc.flatten()
+    # Making descriptor of same size
+    # Descriptor vector size is 64
+    needed_size = (vector_size * 64)
+    if dsc.size < needed_size:
+        # if we have less the 32 descriptors then just adding zeros at the
+        # end of our feature vector
+        dsc = np.concatenate([dsc, np.zeros(needed_size - dsc.size)])
+
+    return dsc
 
 
 # get the training labels
@@ -90,12 +113,14 @@ for training_name in train_labels:
         fv_hu_moments = fd_hu_moments(image)
         fv_haralick = fd_haralick(image)
         fv_histogram = fd_histogram(image)
+        fv_kaze = fd_kaze(image)
 
         ###################################
         # Concatenate global features
         ###################################
-        # global_feature = np.hstack([fv_histogram, fv_haralick, fv_hu_moments])
-        global_feature = np.hstack([fv_hu_moments, fv_haralick, fv_histogram])
+        global_feature = np.hstack(
+            [fv_histogram, fv_haralick, fv_hu_moments, fv_kaze])
+        # global_feature = np.hstack([fv_hu_moments])
 
         # update the list of labels and feature vectors
         labels.append(current_label)
